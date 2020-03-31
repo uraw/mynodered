@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  nodered:
+    image: nodered/node-red
+    container_name: mynodered
+    restart: always
+    ports:
+      - 1880:1880
+    volumes:
+      - node-red-data-volume:/data
+
+volumes:
+  node-red-data-volume:
+    name: node_red_user_data
+    driver: local
