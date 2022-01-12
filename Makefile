@@ -16,5 +16,6 @@ status:
 
 start:
 	sudo systemctl start docker-compose-service@node-red
+
 stop:
 	sudo systemctl stop docker-compose-service@node-red
