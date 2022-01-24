@@ -2,7 +2,7 @@ version: '3.7'
 services:
   nodered:
     image: nodered/node-red
-    container_name: mynodered
+    container_name: node-red
     ports:
       - 1880:1880
     volumes:

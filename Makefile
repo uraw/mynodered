@@ -1,21 +1,30 @@
 # -*- mode: Makefile -*-
 
+DIRECTORY := /opt/node-red
+SYSTEMD_SERVICE := node-red
+CONTAINER_NAME := node-red
+
 install:
-	@sudo mkdir -p /opt/docker-compose-service/node-red/
-	@sudo cp docker-compose.yml /opt/docker-compose-service/node-red/docker-compose.yml
-	@sudo cp systemd/docker-compose-service@.service  /etc/systemd/system/
+	@sudo mkdir -p $(DIRECTORY)
+	@$(MAKE) copyfiles
+	@sudo ln -fs $(DIRECTORY)/$(SYSTEMD_SERVICE).service /etc/systemd/system/$(SYSTEMD_SERVICE).service
 
-enable:
-	sudo systemctl enable docker-compose-service@node-red
+	@sudo systemctl enable $(SYSTEMD_SERVICE)
 
-disable:
-	sudo systemctl disable docker-compose-service@node-red
+	@echo $(SYSTEMD_SERVICE) installed
 
-status:
-	systemctl status docker-compose-service@node-red
+update:
+	@$(MAKE) copyfiles
+	@sudo systemctl daemon-reload
+	@echo $(SYSTEMD_SERVICE) updated
 
-start:
-	sudo systemctl start docker-compose-service@node-red
+copyfiles:
+	@sudo cp docker-compose.yml $(DIRECTORY)
+	@sudo cp $(SYSTEMD_SERVICE).service $(DIRECTORY)
 
-stop:
-	sudo systemctl stop docker-compose-service@node-red
+uninstall:
+	@sudo systemctl disable $(SYSTEMD_SERVICE)
+	@sudo systemctl stop $(SYSTEMD_SERVICE)
+	@sudo docker container rm $(CONTAINER_NAME)
+
+	@echo $(SYSTEMD_SERVICE) uninstalled, should remove $(DIRECTORY) manually

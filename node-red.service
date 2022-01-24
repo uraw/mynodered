@@ -1,11 +1,12 @@
 [Unit]
-Description=%i managed by docker-compose
+Description=Node-RED Service with docker-compose
 Requires=docker.service
 
 [Service]
 Type=simple
 
-Environment=COMPOSE_FILE=/opt/docker-compose-service/%i/docker-compose.yml
+Environment=COMPOSE_FILE=/opt/node-red/docker-compose.yml
+Environment=CONTAINER_NAME=node-red
 
 ExecStartPre=-/usr/local/bin/docker-compose -f ${COMPOSE_FILE} down
 ExecStart=/usr/local/bin/docker-compose -f ${COMPOSE_FILE} up
