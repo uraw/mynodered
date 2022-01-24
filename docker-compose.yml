@@ -3,7 +3,6 @@ services:
   nodered:
     image: nodered/node-red
     container_name: mynodered
-    restart: always
     ports:
       - 1880:1880
     volumes:
